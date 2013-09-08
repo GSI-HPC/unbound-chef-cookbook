@@ -9,5 +9,7 @@ server:
     # The following line will configure unbound to perform cryptographic
     # DNSSEC validation using the root trust anchor.
     auto-trust-anchor-file: "/var/lib/unbound/root.key"
+    val-log-level: 2    
+
     verbosity: 1
-    do-ipv6: <%= @ipv6?'yes':'no' %>
+    do-ip6: <%= @ipv6?'yes':'no' %>

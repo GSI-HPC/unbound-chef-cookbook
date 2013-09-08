@@ -21,4 +21,29 @@
 package 'resolvconf'
 package 'unbound'
 
-template '/etc/unbound/unbound.conf'
+# pull the list of DNS root servers from the internet:
+remote_file "/etc/unbound/root.hints" do
+  #source "ftp://ftp.internic.net/domain/named.cache"
+  source "http://192.0.32.9/domain/named.cache"
+  # OSRN root servers:
+  #source "http://www.orsn.org/roothint/"
+end
+
+template '/etc/unbound/unbound.conf' do
+  notifies :reload, 'service[unbound]'
+  group 'unbound'
+  mode 0640
+end
+
+# drop a defauls file
+template '/etc/default/unbound' do
+  source 'unbound.default.erb'
+  notifies :restart, 'service[unbound]'
+end
+
+service 'unbound' do
+  supports :status => true, :restart => true, :reload => true
+  action [:enable, :start]
+end
+
+
