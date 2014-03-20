@@ -2,7 +2,7 @@
 # Cookbook Name:: unbound
 # Recipe:: default
 #
-# Copyright 2013, Christopher Huhn
+# Copyright 2013 - 2014, Christopher Huhn
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,10 +29,16 @@ remote_file "/etc/unbound/root.hints" do
   #source "http://www.orsn.org/roothint/"
 end
 
+insecure_domains = node[:unbound][:stub_zones].inject([]){ |a,(k,v)| a << k if v[:insecure]; a }
+
 template '/etc/unbound/unbound.conf' do
   notifies :reload, 'service[unbound]'
   group 'unbound'
   mode 0640
+  variables({
+      :insecure_domains => insecure_domains,
+      :stub_zones       => node[:unbound][:stub_zones]
+    })
 end
 
 # drop a defauls file

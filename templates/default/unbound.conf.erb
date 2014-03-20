@@ -13,3 +13,13 @@ server:
 
     verbosity: 1
     do-ip6: <%= @ipv6?'yes':'no' %>
+
+<% @insecure_domains.each do |domain| -%>
+    domain-insecure: "<%= domain %>"
+<%- end %>
+<% @stub_zones.each do |name,config| -%>
+
+stub-zone:
+    name: "<%= name %>"
+    stub-addr: <%= config[:server] %>
+<%- end %>
