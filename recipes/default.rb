@@ -2,7 +2,7 @@
 # Cookbook Name:: unbound
 # Recipe:: default
 #
-# Copyright 2013, YOUR_COMPANY_NAME
+# Copyright 2013, Christopher Huhn
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,5 +45,3 @@ service 'unbound' do
   supports :status => true, :restart => true, :reload => true
   action [:enable, :start]
 end
-
-
