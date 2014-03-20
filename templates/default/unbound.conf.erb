@@ -1,5 +1,5 @@
 # Unbound configuration file for Debian.
-#
+# <% if node.has_key?('chef') and node['chef'].has_key?('template_warning') -%><%= "\n##{node['chef']['template_warning']}\n#\n"%><%- end %>
 # See the unbound.conf(5) man page.
 #
 # See /usr/share/doc/unbound/examples/unbound.conf for a commented
