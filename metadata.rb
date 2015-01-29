@@ -1,3 +1,4 @@
+name             "unbound"
 maintainer       "Christopher Huhn"
 maintainer_email "c.huhn@gsi.de"
 license          "GNU Public License 3.0"
