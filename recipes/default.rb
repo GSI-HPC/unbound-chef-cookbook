@@ -21,14 +21,6 @@
 package 'resolvconf'
 package 'unbound'
 
-# pull the list of DNS root servers from the internet:
-remote_file "/etc/unbound/root.hints" do
-  #source "ftp://ftp.internic.net/domain/named.cache"
-  source "http://192.0.32.9/domain/named.cache"
-  # OSRN root servers:
-  #source "http://www.orsn.org/roothint/"
-end
-
 insecure_domains = node[:unbound][:stub_zones].inject([]){ |a,(k,v)| a << k if v[:insecure]; a }
 
 template '/etc/unbound/unbound.conf' do
