@@ -6,9 +6,11 @@
 # reference config file.
 
 server:
+    <% if node[:unbound][:dnssec][:enable] %>
     # The following line will configure unbound to perform cryptographic
     # DNSSEC validation using the root trust anchor.
     auto-trust-anchor-file: "/var/lib/unbound/root.key"
+    <% end %>
     val-log-level: 2    
 
     verbosity: 1
