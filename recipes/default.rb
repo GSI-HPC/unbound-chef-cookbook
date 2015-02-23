@@ -21,7 +21,10 @@
 package 'resolvconf'
 package 'unbound'
 
-insecure_domains = node[:unbound][:stub_zones].inject([]){ |a,(k,v)| a << k if v[:insecure]; a }
+if node[:unbound][:dnssec][:enable]
+  # these are obtained from the stub_zones...
+  insecure_domains = node[:unbound][:stub_zones].inject([]){ |a,(k,v)| a << k if v[:insecure]; a }
+end
 
 template '/etc/unbound/unbound.conf' do
   notifies :reload, 'service[unbound]'
