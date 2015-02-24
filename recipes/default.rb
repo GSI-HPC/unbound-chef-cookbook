@@ -33,6 +33,7 @@ if node[:unbound][:dnssec][:enable]
     group 'unbound'
     mode 0640
     variables({
+        :ipv6 => node[:unbound][:ipv6],
         :insecure_domains => insecure_domains,
         :stub_zones       => node[:unbound][:stub_zones]
     })
@@ -47,7 +48,8 @@ if node[:unbound][:caching]
     group 'unbound'
     mode 0640
     variables({
-      :forwarders => node[:unbound][:forward_srv]
+      :forwarders => node[:unbound][:forward_srv],
+      :ipv6 => node[:unbound][:ipv6]
     })
   end
 
