@@ -6,22 +6,29 @@
 # reference config file.
 
 server:
-    <% if node[:unbound][:dnssec][:enable] %>
-    # The following line will configure unbound to perform cryptographic
-    # DNSSEC validation using the root trust anchor.
-    auto-trust-anchor-file: "/var/lib/unbound/root.key"
-    <% end %>
     val-log-level: 2    
 
     verbosity: 1
     do-ip6: <%= @ipv6?'yes':'no' %>
 
-<% @insecure_domains.each do |domain| -%>
+    <% if node[:unbound][:dnssec][:enable] %>
+    # The following line will configure unbound to perform cryptographic
+    # DNSSEC validation using the root trust anchor.
+    auto-trust-anchor-file: "/var/lib/unbound/root.key"
+    <% @insecure_domains.each do |domain| -%>
     domain-insecure: "<%= domain %>"
-<%- end %>
-<% @stub_zones.each do |name,config| -%>
-
+    <%- end %>
+    <% end %>
+    <% if node[:unbound][:caching] %>
+forward-zone:
+    name: "."
+    forward-addr: 140.181.96.11  # lxdns1.gsi.de
+    forward-addr: 140.181.96.29  # lxdns2.gsi.de
+    <% else %>
+    <% @stub_zones.each do |name,config| -%>
 stub-zone:
     name: "<%= name %>"
     stub-addr: <%= config[:server] %>
-<%- end %>
+    <%- end %>
+    <% end %>
+
