@@ -22,8 +22,9 @@ server:
     <% if node[:unbound][:caching] %>
 forward-zone:
     name: "."
-    forward-addr: 140.181.96.11  # lxdns1.gsi.de
-    forward-addr: 140.181.96.29  # lxdns2.gsi.de
+    <% @forwarders.each do |srv_ip| -%>
+    forward-addr: <%= srv_ip %>  
+    <%- end %>
     <% else %>
     <% @stub_zones.each do |name,config| -%>
 stub-zone:
