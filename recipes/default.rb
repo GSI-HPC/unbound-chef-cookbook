@@ -2,6 +2,9 @@
 # Cookbook Name:: unbound
 # Recipe:: default
 #
+# Author:: Christopher Huhn
+# Author:: Matteo Dessalvi
+#
 # Copyright 2013 - 2014, Christopher Huhn
 #
 # This program is free software: you can redistribute it and/or modify
