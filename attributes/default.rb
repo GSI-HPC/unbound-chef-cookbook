@@ -7,6 +7,13 @@ default[:unbound][:caching] = true
 # listening IP addresses as nameservers to resolvconf.
 default[:unbound][:resolvconf] = false
 
+# Unbound listen interfaces (by default configured to
+# listen only on the loopback address).
+default[:unbound][:interfaces] = Array.new
+
+# Support IPv6 (must be set to true to enable it).
+default[:unbound][:ipv6] = nil
+
 # IPs for the DNS forwarders:
 default[:unbound][:forward_srv] = Array.new
 
