@@ -19,6 +19,13 @@ server:
     domain-insecure: "<%= domain %>"
     <%- end %>
     <% end %>
+
+    <% if (!node[:unbound][:interfaces].nil?) %>
+    <% node[:unbound][:interfaces].each do |interface_ip| -%>
+    interface: <%= interface_ip %>
+    <%- end %>
+    <% end %>
+
     <% if node[:unbound][:caching] %>
 forward-zone:
     name: "."
