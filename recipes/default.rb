@@ -24,16 +24,24 @@ package 'unbound'
 if node[:unbound][:dnssec][:enable]
   # these are obtained from the stub_zones...
   insecure_domains = node[:unbound][:stub_zones].inject([]){ |a,(k,v)| a << k if v[:insecure]; a }
-end
 
-template '/etc/unbound/unbound.conf' do
-  notifies :reload, 'service[unbound]'
-  group 'unbound'
-  mode 0640
-  variables({
-      :insecure_domains => insecure_domains,
-      :stub_zones       => node[:unbound][:stub_zones]
+  template '/etc/unbound/unbound.conf' do
+    notifies :reload, 'service[unbound]'
+    group 'unbound'
+    mode 0640
+    variables({
+        :insecure_domains => insecure_domains,
+        :stub_zones       => node[:unbound][:stub_zones]
     })
+  end
+
+else
+  template '/etc/unbound/unbound.conf' do
+    notifies :reload, 'service[unbound]'
+    group 'unbound'
+    mode 0640
+  end
+
 end
 
 # drop a defauls file
