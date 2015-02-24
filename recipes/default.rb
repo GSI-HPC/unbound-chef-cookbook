@@ -37,17 +37,23 @@ if node[:unbound][:dnssec][:enable]
         :stub_zones       => node[:unbound][:stub_zones]
     })
   end
+end
 
-else
+# configure a DNS caching server:
+if node[:unbound][:caching]
+
   template '/etc/unbound/unbound.conf' do
     notifies :reload, 'service[unbound]'
     group 'unbound'
     mode 0640
+    variables({
+      :forwarders => node[:unbound][:forward_srv]
+    })
   end
 
 end
 
-# drop a defauls file
+# drop a Debian default file
 template '/etc/default/unbound' do
   source 'unbound.default.erb'
   notifies :restart, 'service[unbound]'
