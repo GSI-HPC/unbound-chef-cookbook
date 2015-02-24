@@ -29,7 +29,7 @@ if node[:unbound][:dnssec][:enable]
   insecure_domains = node[:unbound][:stub_zones].inject([]){ |a,(k,v)| a << k if v[:insecure]; a }
 
   template '/etc/unbound/unbound.conf' do
-    notifies :reload, 'service[unbound]'
+    notifies :restart, 'service[unbound]'
     group 'unbound'
     mode 0640
     variables({
@@ -44,7 +44,7 @@ end
 if node[:unbound][:caching]
 
   template '/etc/unbound/unbound.conf' do
-    notifies :reload, 'service[unbound]'
+    notifies :restart, 'service[unbound]'
     group 'unbound'
     mode 0640
     variables({
