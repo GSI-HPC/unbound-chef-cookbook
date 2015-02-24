@@ -3,6 +3,10 @@
 # service as a caching DNS server:
 default[:unbound][:caching] = true
 
+# If set, the unbound init script will provide unbound's 
+# listening IP addresses as nameservers to resolvconf.
+default[:unbound][:resolvconf] = false
+
 # IPs for the DNS forwarders:
 default[:unbound][:forward_srv] = Array.new
 
