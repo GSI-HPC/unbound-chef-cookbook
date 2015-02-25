@@ -21,7 +21,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-package 'resolvconf'
+if node[:unbound][:resolvconf]
+  package 'resolvconf'
+end
+
 package 'unbound'
 
 # Ship the general Unbound config file (it will just include any
