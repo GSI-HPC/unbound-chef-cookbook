@@ -24,11 +24,20 @@
 package 'resolvconf'
 package 'unbound'
 
+# Ship the general Unbound config file (it will just include any
+# configuration under /etc/unbound/unbound.conf.d/*.conf).
+cookbook_file "unbound_main" do
+  source "unbound.conf"
+  path "/etc/unbound/unbound.conf"
+  action :create
+end
+
 if node[:unbound][:dnssec][:enable]
   # these are obtained from the stub_zones...
   insecure_domains = node[:unbound][:stub_zones].inject([]){ |a,(k,v)| a << k if v[:insecure]; a }
 
-  template '/etc/unbound/unbound.conf' do
+  template '/etc/unbound/unbound.conf.d/dnssec-root-auto-trust-anchor-file.conf' do
+    source 'unbound_server.conf.erb'
     notifies :restart, 'service[unbound]'
     group 'unbound'
     mode 0640
@@ -43,7 +52,8 @@ end
 # configure a DNS caching server:
 if node[:unbound][:caching]
 
-  template '/etc/unbound/unbound.conf' do
+  template '/etc/unbound/unbound.conf.d/recursive-caching-dns.conf' do
+    source 'unbound_server.conf.erb'
     notifies :restart, 'service[unbound]'
     group 'unbound'
     mode 0640
