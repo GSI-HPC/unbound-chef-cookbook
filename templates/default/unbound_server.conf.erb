@@ -16,9 +16,8 @@ server:
     do-ip6: <%= @ipv6?'yes':'no' %>
 
     <% if node[:unbound][:dnssec][:enable] %>
-    # The following line will configure unbound to perform cryptographic
-    # DNSSEC validation using the root trust anchor.
-    auto-trust-anchor-file: "/var/lib/unbound/root.key"
+    # Ignore the DNSSEC chain of trust for the
+    # following domains:
     <% @insecure_domains.each do |domain| -%>
     domain-insecure: "<%= domain %>"
     <%- end %>
