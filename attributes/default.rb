@@ -11,6 +11,9 @@ default[:unbound][:resolvconf] = false
 # listen only on the loopback address).
 default[:unbound][:interfaces] = Array.new
 
+# Unbound ACLs
+default['unbound']['acls'] = []
+
 # Support IPv6 (must be set to true to enable it).
 default[:unbound][:ipv6] = nil
 
@@ -26,4 +29,3 @@ default[:unbound][:stub_zones]       = { }
 # DNSSEC attributes:
 default[:unbound][:dnssec][:enable] = false
 default[:unbound][:dnssec][:insecure_domains] = [ ]
-

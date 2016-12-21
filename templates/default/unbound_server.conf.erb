@@ -6,7 +6,7 @@
 #
 # See the unbound.conf(5) man page.
 #
-# See /usr/share/doc/unbound/examples/unbound.conf 
+# See /usr/share/doc/unbound/examples/unbound.conf
 # for a commented reference config file.
 
 server:
@@ -15,31 +15,36 @@ server:
 
     do-ip6: <%= @ipv6?'yes':'no' %>
 
-    <% if node[:unbound][:dnssec][:enable] %>
+<% if node[:unbound][:dnssec][:enable] %>
     # Ignore the DNSSEC chain of trust for the
     # following domains:
-    <% @insecure_domains.each do |domain| -%>
+  <% @insecure_domains.each do |domain| -%>
     domain-insecure: "<%= domain %>"
-    <%- end %>
-    <% end %>
-
-    <% if (!node[:unbound][:interfaces].nil?) %>
-    <% node[:unbound][:interfaces].each do |interface_ip| -%>
+  <%- end -%>
+<%- end -%>
+<%- unless node[:unbound][:interfaces].nil? -%>
+  <% node[:unbound][:interfaces].each do |interface_ip| -%>
     interface: <%= interface_ip %>
-    <%- end %>
-    <% end %>
+  <%- end -%>
+<% end %>
+<%- if @acls -%>
+  <%- @acls.each do |acl| -%>
+    access-control: <%= acl['range'] %> <%= acl['action'] %>
+  <%- end -%>
+<%- end -%>
+<%- unless @forwarders.empty? -%>
 
-    <% if node[:unbound][:caching] %>
 forward-zone:
     name: "."
-    <% @forwarders.each do |srv_ip| -%>
-    forward-addr: <%= srv_ip %>  
-    <%- end %>
-    <% else %>
-    <% @stub_zones.each do |name,config| -%>
+  <% @forwarders.each do |srv_ip| -%>
+    forward-addr: <%= srv_ip %>
+  <%- end %>
+<%- end -%>
+<%- if @stub_zones -%>
+  <%- @stub_zones.each do |name,config| -%>
+
 stub-zone:
     name: "<%= name %>"
     stub-addr: <%= config[:server] %>
-    <%- end %>
-    <% end %>
-
+  <%- end -%>
+<%- end -%>

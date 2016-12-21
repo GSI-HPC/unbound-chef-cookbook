@@ -25,7 +25,10 @@ if node[:unbound][:resolvconf]
   package 'resolvconf'
 end
 
-package 'unbound'
+apt_package 'unbound' do
+  default_release 'wheezy-backports' if node['lsb']['codename'] == 'wheezy'
+end
+
 
 # Ship the general Unbound config file (it will just include any
 # configuration under /etc/unbound/unbound.conf.d/*.conf).
@@ -51,24 +54,23 @@ if node[:unbound][:dnssec][:enable]
         :ipv6 => node[:unbound][:ipv6],
         :insecure_domains => insecure_domains,
         :stub_zones       => node[:unbound][:stub_zones]
-    })
+              })
   end
 end
 
 # configure a DNS caching server:
 if node[:unbound][:caching]
-
   template '/etc/unbound/unbound.conf.d/recursive-caching-dns.conf' do
     source 'unbound_server.conf.erb'
     notifies :restart, 'service[unbound]'
     group 'unbound'
     mode 0640
-    variables({
-      :forwarders => node[:unbound][:forward_srv],
-      :ipv6 => node[:unbound][:ipv6]
-    })
+    variables(
+      forwarders: node['unbound']['forward_srv'],
+      ipv6:       node['unbound']['ipv6'],
+      acls:       node['unbound']['acls']
+    )
   end
-
 end
 
 # drop a Debian default file
