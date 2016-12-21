@@ -27,10 +27,10 @@ None specific.
 Attributes
 ==========
 
-`* node[:unbound][:forward_srv]`
-`* node[:unbound][:interfaces]`
-`* node[:unbound][:resolvconf]`
-`* node[:unbound][:caching]`
+* `node[:unbound][:forward_srv]`
+* `node[:unbound][:interfaces]`
+* `node[:unbound][:resolvconf]`
+* `node[:unbound][:caching]`
 
 By default 'caching' is set to true, so the
 cookbook will always configure a caching DNS

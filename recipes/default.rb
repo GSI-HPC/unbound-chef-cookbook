@@ -5,7 +5,7 @@
 # Author:: Christopher Huhn
 # Author:: Matteo Dessalvi
 #
-# Copyright 2013 - 2014, Christopher Huhn
+# Copyright 2013 - 2016, GSI HPC department
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,6 +34,9 @@ cookbook_file "unbound_main" do
   path "/etc/unbound/unbound.conf"
   action :create
 end
+
+# create the directory for config snippets:
+directory '/etc/unbound/unbound.conf.d'
 
 if node[:unbound][:dnssec][:enable]
   # these are obtained from the stub_zones...
