@@ -32,6 +32,13 @@ server:
     access-control: <%= acl['range'] %> <%= acl['action'] %>
   <%- end -%>
 <%- end -%>
+<%- if @local_zones -%>
+  <%- @local_zones.each do |name,config| -%>
+
+local-zone: '<%= name %>' <%= config['mode'] %>
+  <%- end -%>
+<%- end -%>
+<%# FIXME: allow forwarding for multiple specific domains -%>
 <%- unless @forwarders.empty? -%>
 
 forward-zone:
@@ -44,7 +51,9 @@ forward-zone:
   <%- @stub_zones.each do |name,config| -%>
 
 stub-zone:
-    name: "<%= name %>"
-    stub-addr: <%= config[:server] %>
+    name:      "<%= name %>"
+    <%- config['addr'].each do |server| -%>
+    stub-addr: <%= server %>
+    <%- end -%>
   <%- end -%>
 <%- end -%>

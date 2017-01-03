@@ -66,9 +66,11 @@ if node[:unbound][:caching]
     group 'unbound'
     mode 0640
     variables(
-      forwarders: node['unbound']['forward_srv'],
-      ipv6:       node['unbound']['ipv6'],
-      acls:       node['unbound']['acls']
+      forwarders:  node['unbound']['forward_srv'],
+      ipv6:        node['unbound']['ipv6'],
+      acls:        node['unbound']['acls'],
+      local_zones: node['unbound']['local-zones'],
+      stub_zones:  node['unbound']['stub-zones']
     )
   end
 end
