@@ -21,7 +21,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-if node[:unbound][:resolvconf]
+if node['unbound']['resolvconf']
   package 'resolvconf'
 end
 
@@ -41,9 +41,9 @@ end
 # create the directory for config snippets:
 directory '/etc/unbound/unbound.conf.d'
 
-if node[:unbound][:dnssec][:enable]
+if node['unbound']['dnssec']['enable']
   # these are obtained from the stub_zones...
-  insecure_domains = node[:unbound][:stub_zones].inject([]){ |a,(k,v)| a << k if v[:insecure]; a }
+  insecure_domains = node['unbound']['stub_zones'].inject([]){ |a,(k,v)| a << k if v['insecure']; a }
 
   template '/etc/unbound/unbound.conf.d/dnssec-root-auto-trust-anchor-file.conf' do
     source 'unbound_server.conf.erb'
@@ -51,15 +51,15 @@ if node[:unbound][:dnssec][:enable]
     group 'unbound'
     mode 0640
     variables({
-        :ipv6 => node[:unbound][:ipv6],
+        :ipv6 => node['unbound']['ipv6'],
         :insecure_domains => insecure_domains,
-        :stub_zones       => node[:unbound][:stub_zones]
+        :stub_zones       => node['unbound']['stub_zones']
               })
   end
 end
 
 # configure a DNS caching server:
-if node[:unbound][:caching]
+if node['unbound']['caching']
   template '/etc/unbound/unbound.conf.d/recursive-caching-dns.conf' do
     source 'unbound_server.conf.erb'
     notifies :restart, 'service[unbound]'

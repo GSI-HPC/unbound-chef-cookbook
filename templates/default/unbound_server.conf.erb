@@ -15,15 +15,15 @@ server:
 
     do-ip6: <%= @ipv6?'yes':'no' %>
 
-<% if node[:unbound][:dnssec][:enable] %>
+<% if node['unbound']['dnssec']['enable'] %>
     # Ignore the DNSSEC chain of trust for the
     # following domains:
   <% @insecure_domains.each do |domain| -%>
     domain-insecure: "<%= domain %>"
   <%- end -%>
 <%- end -%>
-<%- unless node[:unbound][:interfaces].nil? -%>
-  <% node[:unbound][:interfaces].each do |interface_ip| -%>
+<%- unless node['unbound']['interfaces'].nil? -%>
+  <% node['unbound']['interfaces'].each do |interface_ip| -%>
     interface: <%= interface_ip %>
   <%- end -%>
 <% end %>
