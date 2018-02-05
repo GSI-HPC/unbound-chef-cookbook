@@ -29,3 +29,7 @@ default['unbound']['stub_zones']       = { }
 # DNSSEC attributes:
 default['unbound']['dnssec']['enable'] = false
 default['unbound']['dnssec']['insecure_domains'] = [ ]
+
+# logging:
+default['unbound']['logging']['verbosity']  = 1
+default['unbound']['logging']['use_syslog'] = true

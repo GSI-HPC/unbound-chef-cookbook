@@ -75,6 +75,14 @@ if node['unbound']['caching']
   end
 end
 
+file '/etc/unbound/unbound.conf.d/logging.conf' do
+  content <<EOF
+server:
+    verbosity: #{node['unbound']['logging']['verbosity'] || 1}
+    use-syslog: #{node['unbound']['logging']['use_syslog']?'yes':'no'}
+EOF
+end
+
 # drop a Debian default file
 template '/etc/default/unbound' do
   source 'unbound.default.erb'
