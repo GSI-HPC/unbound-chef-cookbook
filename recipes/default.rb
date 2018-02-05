@@ -59,20 +59,19 @@ if node['unbound']['dnssec']['enable']
 end
 
 # configure a DNS caching server:
-if node['unbound']['caching']
-  template '/etc/unbound/unbound.conf.d/recursive-caching-dns.conf' do
-    source 'unbound_server.conf.erb'
-    notifies :restart, 'service[unbound]'
-    group 'unbound'
-    mode 0640
-    variables(
-      forwarders:  node['unbound']['forward_srv'],
-      ipv6:        node['unbound']['ipv6'],
-      acls:        node['unbound']['acls'],
-      local_zones: node['unbound']['local-zones'],
-      stub_zones:  node['unbound']['stub-zones']
-    )
-  end
+template '/etc/unbound/unbound.conf.d/recursive-caching-dns.conf' do
+  source 'unbound_server.conf.erb'
+  notifies :restart, 'service[unbound]'
+  group 'unbound'
+  mode 0640
+  variables(
+    forwarders:  node['unbound']['forward_srv'],
+    ipv6:        node['unbound']['ipv6'],
+    acls:        node['unbound']['acls'],
+    local_zones: node['unbound']['local-zones'],
+    stub_zones:  node['unbound']['stub-zones']
+  )
+  only_if { node['unbound']['caching'] }
 end
 
 file '/etc/unbound/unbound.conf.d/logging.conf' do
