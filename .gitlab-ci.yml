@@ -31,9 +31,8 @@ kitchen:
   parallel:
     matrix:
       - PLATFORM:
-        # - jessie
-        - stretch
         - buster
+        - bullseye
         SUITE:
         - $CI_PROJECT_NAME
 
