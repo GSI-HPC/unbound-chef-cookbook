@@ -2,8 +2,8 @@
 driver:
   name: vagrant
   box_auto_update: true
-  # customize:
-  #   memory: 1024
+  customize:
+    memory: 1024
   #   cpus: 4
   # network:
   #   - ["forwarded_port", {guest: 80, host: 8977}]
